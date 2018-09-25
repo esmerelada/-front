@@ -1,0 +1,30 @@
+﻿布局分步走
+一、全局去边距
+*{
+			margin:0;
+			padding:0;
+		}
+二、全局整体设置大box，设置长宽边框与底色,设置居中
+.box{
+			position:relative;
+			width:1393px;
+			height:786px;
+			border:1px #ccc solid;
+			margin:50px auto;
+			background-color:#ccc
+		}
+
+三、规划子布局
+四、父、子div的定位。子设置绝对定位，相对于父div。父需要设置相对定位。
+    绝对定位要相对于第一个设置了relative属性的父div。
+五、背景图片的设置
+    使用background整合各个设置子属性
+    background:url("image/icon1.png") no-repeat 0 center/496px 21px;
+六、素材的使用
+    不是所有的图标都要单独设置，可以把相关的图标放到一起，通过设置div的背景图片偏移位置即可实现。
+七、文字的css设置思路
+    line-height: 42px;
+    font-size: 13px;
+    color: #fff;
+八、常见布局
+    https://segmentfault.com/a/1190000011358507

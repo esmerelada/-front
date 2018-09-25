@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>视频布局</title>
+    <meta name="KeyWrords" content="布局">
+    <meta name="Description" content="描述">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            position: relative;
+            width: 1393px;
+            height: 786px;
+            border: 1px #ccc solid;
+            margin: 50px auto;
+            background-color: #ccc
+        }
+
+        .box .video {
+            width: 1393px;
+            height: 786px;
+        }
+
+        .video .con {
+            position: absolute;
+            width: 100%;
+            height: 55px;
+            background-color: rgba(0, 0, 0, .1);
+            left: 0px;
+            bottom: 0px;
+        }
+
+        .video .con-top {
+            position: relative;
+            width: 100%;
+            height: 5px;
+            background-color: #c8c1b9;
+        }
+
+        .video .con-top-pro {
+            width: 0px;
+            height: 5px;
+            background-color: #f50;
+        }
+
+        .video .con-top-btn {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: -1px;
+            top: -2px;
+            background-color: #f50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .video .con-left {
+            width: 260px;
+            height: 50px;
+            float: left;
+        }
+
+        .video .con-left .control, .video .con-right .control {
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-left: 5px;
+        }
+
+        .video .con-left .control-play {
+            margin-left: 10px;
+        }
+
+        .video .con-left .back-gd, .video .con-right .back-gd {
+            background: url("image/icon1.png") no-repeat 0 center/496px 21px;
+            cursor: pointer;
+        }
+
+        .video .con-left .control-next {
+            background-position-x: -127px;
+        }
+
+        .video .con-left .control-loop {
+            background-position-x: -198px;
+        }
+
+        .video .con-right .control-vol {
+            background-position-x: -329px;
+        }
+
+        .video .con-right .control-light {
+            background-position-x: -264px;
+        }
+
+        .video .con-right .control-pwhole {
+            background-position-x: -403px;
+        }
+
+        .video .con-right .control-whole {
+            background-position-x: -473px;
+        }
+
+        .video .con-left .control-time {
+            line-height: 42px;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .video .con-right {
+            width: 300px;
+            height: 50px;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="video">
+        <video id="video" src="video/1.mp4" width="100%" height="100%"></video>
+        <div class="con">
+            <div class="con-top">
+                <div class="con-top-pro"></div>
+                <div class="con-top-btn"></div>
+            </div>
+            <div class="con-left">
+                <div class="control back-gd control-play"></div>
+                <div class="control back-gd control-next"></div>
+                <div class="control back-gd control-loop"></div>
+                <div class="control control-time">
+                    <span>00:00</span>/<span>12:00</span>
+                </div>
+            </div>
+            <div class="con-right">
+                <div class="control control-definition"></div>
+                <div class="control control-rate"></div>
+                <div class="control back-gd control-vol"></div>
+                <div class="control back-gd control-light"></div>
+                <div class="control back-gd control-pwhole"></div>
+                <div class="control back-gd control-whole"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var vid = document.getElementById("video");
+    var oplay = document.getElementsByClassName("control-play")[0]
+    var pro = document.getElementsByClassName("con-top-pro")[0]
+    var btn = document.getElementsByClassName("con-top-btn")[0]
+    var oProW = document.getElementsByClassName("con-top")[0]
+
+    var timer = null;
+    //播放与暂停
+    var check = false;
+    oplay.onclick = function () {
+        if (check) {
+            vid.play();
+            timer = setInterval(nowTime, 25);
+        } else {
+            vid.pause();
+            clearInterval(timer);
+        }
+        check = !check;
+    }
+
+    //播放进度条
+    function nowTime() {
+        var n = vid.currentTime / vid.duration;
+        btn.style.left = n * oProW.offsetWidth + "px";
+        pro.style.width = n * oProW.offsetWidth + "px";
+    }
+
+    //拖动进度条
+    btn.onmousedown = function (e) {
+        var x = e.clientX - this.offsetLeft;
+        btn.onmousemove = function (e) {
+            var _left = e.clientX - x
+            btn.style.left = _left + "px";
+            pro.style.width = 2 + _left + "px";
+            var n = _left / oProW.offsetWidth;
+            vid.currentTime = vid.duration * n;
+        }
+        btn.onmouseup = function () {
+            btn.onmousemove = null;
+        }
+    }
+
+    oProW.onmousedown = function (e) {
+        var x = e.clientX;
+        var _left = x - (document.body.clientWidth - vid.offsetWidth) / 2;
+        var n = _left / vid.offsetWidth;
+        btn.style.left = _left + "px";
+        pro.style.width = 2 + _left + "px";
+        vid.currentTime = n * vid.duration;
+    }
+</script>
+</body>
+</html>
